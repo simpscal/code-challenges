@@ -1,4 +1,5 @@
 import { CodeBlock } from '@/components/code-block';
+import { SourceLink } from '@/components/source-link';
 import { ComplexityTable } from '@/pages/problem-1/components/complexity-table';
 import { LiveComparison } from '@/pages/problem-1/components/live-comparison';
 import sumToNSource from '@/pages/problem-1/lib/sum-to-n.ts?raw';
@@ -13,6 +14,7 @@ export default function Problem1Page() {
                     Three implementations of the same summation, each with a different time/space trade-off. n is
                     treated as any integer — negative n sums the descending range up to -1.
                 </p>
+                <SourceLink path='src/pages/problem-1' />
             </div>
 
             <ComplexityTable />

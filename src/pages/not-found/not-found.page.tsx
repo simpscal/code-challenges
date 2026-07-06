@@ -2,6 +2,7 @@ import { Compass, Home } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { ROUTES } from '@/app/constants/routes.constant';
+import { SourceLink } from '@/components/source-link';
 import { Button } from '@/components/ui/button';
 
 export default function NotFoundPage() {
@@ -19,6 +20,7 @@ export default function NotFoundPage() {
                     Back to overview
                 </Link>
             </Button>
+            <SourceLink path='src/pages/not-found' />
         </div>
     );
 }

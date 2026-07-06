@@ -2,6 +2,7 @@ import { ArrowRight, Calculator, GitCompareArrows, Repeat } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { ROUTES } from '@/app/constants/routes.constant';
+import { SourceLink } from '@/components/source-link';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -9,6 +10,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 const PROBLEMS = [
     {
         path: ROUTES.problem1,
+        sourcePath: 'src/pages/problem-1',
         icon: Calculator,
         title: 'Problem 1 — Sum to N',
         description: 'Three distinct JavaScript implementations of summation to n, compared live.',
@@ -16,6 +18,7 @@ const PROBLEMS = [
     },
     {
         path: ROUTES.problem2,
+        sourcePath: 'src/pages/problem-2',
         icon: Repeat,
         title: 'Problem 2 — Currency Swap',
         description: 'A production-quality token swap form backed by live market prices.',
@@ -23,6 +26,7 @@ const PROBLEMS = [
     },
     {
         path: ROUTES.problem3,
+        sourcePath: 'src/pages/problem-3',
         icon: GitCompareArrows,
         title: 'Problem 3 — Refactor',
         description: 'Anti-patterns identified and fixed in a React + TypeScript component.',
@@ -68,6 +72,7 @@ export default function LandingPage() {
                                     </Badge>
                                 ))}
                             </div>
+                            <SourceLink path={problem.sourcePath} />
                         </CardContent>
                         <CardFooter>
                             <Button asChild variant='secondary' className='w-full'>

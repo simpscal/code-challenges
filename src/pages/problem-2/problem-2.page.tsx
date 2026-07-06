@@ -1,3 +1,4 @@
+import { SourceLink } from '@/components/source-link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SwapForm } from '@/pages/problem-2/components/swap-form';
 
@@ -11,6 +12,7 @@ export default function Problem2Page() {
                     Swap between tokens at live market rates. Prices are fetched from a public price feed; submitting a
                     swap is simulated with a short network delay.
                 </p>
+                <SourceLink path='src/pages/problem-2' />
             </div>
 
             <Card className='mx-auto w-full max-w-md'>

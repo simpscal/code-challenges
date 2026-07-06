@@ -1,4 +1,5 @@
 import { CodeBlock } from '@/components/code-block';
+import { SourceLink } from '@/components/source-link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { IssueList } from '@/pages/problem-3/components/issue-list';
 import { WalletPage as RefactoredWalletPage } from '@/pages/problem-3/components/wallet-page-refactored';
@@ -18,6 +19,7 @@ export default function Problem3Page() {
                     {ISSUES.length} computational inefficiencies and anti-patterns identified in the original component,
                     each mapped to a line in the highlighted snippet below.
                 </p>
+                <SourceLink path='src/pages/problem-3' />
             </div>
 
             <div className='grid gap-6 lg:grid-cols-2'>

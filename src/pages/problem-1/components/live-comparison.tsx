@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { sum_to_n_a, sum_to_n_b, sum_to_n_c } from '@/pages/problem-1/lib/sum-to-n';
+import { sum_to_n_a, sum_to_n_b, sum_to_n_c } from '@/pages/problem-1/utils/sum-to-n';
 
 const RECURSION_SAFE_LIMIT = 10_000;
 

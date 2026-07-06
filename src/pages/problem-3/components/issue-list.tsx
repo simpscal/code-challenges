@@ -1,5 +1,5 @@
 import { Badge } from '@/components/ui/badge';
-import { ISSUES } from '@/pages/problem-3/lib/issues';
+import { ISSUES } from '@/pages/problem-3/constants/issues';
 
 export function IssueList() {
     return (

@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { IssueList } from '@/pages/problem-3/components/issue-list';
 import { WalletPage as RefactoredWalletPage } from '@/pages/problem-3/components/wallet-page-refactored';
 import refactoredSource from '@/pages/problem-3/components/wallet-page-refactored.tsx?raw';
-import { ISSUES } from '@/pages/problem-3/lib/issues';
+import { ISSUES } from '@/pages/problem-3/constants/issues';
 import originalSource from '@/pages/problem-3/lib/original-wallet-page.txt?raw';
 
 const ISSUE_LINES = ISSUES.map(issue => issue.line);

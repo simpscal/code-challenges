@@ -2,7 +2,7 @@ import { CodeBlock } from '@/components/code-block';
 import { SourceLink } from '@/components/source-link';
 import { ComplexityTable } from '@/pages/problem-1/components/complexity-table';
 import { LiveComparison } from '@/pages/problem-1/components/live-comparison';
-import sumToNSource from '@/pages/problem-1/lib/sum-to-n.ts?raw';
+import sumToNSource from '@/pages/problem-1/utils/sum-to-n.ts?raw';
 
 export default function Problem1Page() {
     return (

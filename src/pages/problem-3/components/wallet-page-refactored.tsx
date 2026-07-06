@@ -3,8 +3,8 @@ import { useMemo } from 'react';
 import { WalletRow } from '@/pages/problem-3/components/wallet-row';
 import { usePrices } from '@/pages/problem-3/hooks/use-prices';
 import { useWalletBalances } from '@/pages/problem-3/hooks/use-wallet-balances';
-import { getPriority, isRecognizedBlockchain } from '@/pages/problem-3/lib/wallet-priority';
 import type { WalletPageProps } from '@/pages/problem-3/types/wallet-page.types';
+import { getPriority, isRecognizedBlockchain } from '@/pages/problem-3/utils/wallet-priority';
 
 export function WalletPage({ className, ...rest }: WalletPageProps) {
     const balances = useWalletBalances();

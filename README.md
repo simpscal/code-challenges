@@ -6,11 +6,11 @@ A small React + TypeScript app answering three frontend code challenges, deploye
 
 ## Problems
 
-| # | Problem | Route |
-|---|---------|-------|
-| 1 | [Sum to n](./code-challenges.md) — three implementations, compared live | `/problem-1` |
-| 2 | Currency swap form, backed by a live price feed | `/problem-2` |
-| 3 | Refactor: anti-patterns found and fixed in a React + TypeScript component | `/problem-3` |
+| #   | Problem                                                                   | Route        |
+| --- | ------------------------------------------------------------------------- | ------------ |
+| 1   | [Sum to n](./code-challenges.md) — three implementations, compared live   | `/problem-1` |
+| 2   | Currency swap form, backed by a live price feed                           | `/problem-2` |
+| 3   | Refactor: anti-patterns found and fixed in a React + TypeScript component | `/problem-3` |
 
 ## Stack
 

@@ -4,6 +4,7 @@ import { ArrowDownUp, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { z } from 'zod';
 
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -13,7 +14,29 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { getTokens, PRICES_QUERY_KEY } from '@/pages/problem-2/apis/prices.api';
 import { submitSwap } from '@/pages/problem-2/apis/swap.api';
 import { TokenSelect } from '@/pages/problem-2/components/token-select';
-import { swapFormSchema, type SwapFormValues } from '@/pages/problem-2/lib/swap-schema';
+
+const MAX_DECIMALS = 8;
+
+const swapFormSchema = z
+    .object({
+        fromCurrency: z.string().min(1, 'Select a token to swap from.'),
+        toCurrency: z.string().min(1, 'Select a token to swap to.'),
+        fromAmount: z
+            .string()
+            .min(1, 'Enter an amount.')
+            .refine(value => !Number.isNaN(Number(value)), 'Enter a valid number.')
+            .refine(value => Number(value) > 0, 'Amount must be greater than 0.')
+            .refine(value => {
+                const decimals = value.split('.')[1]?.length ?? 0;
+                return decimals <= MAX_DECIMALS;
+            }, `Amount supports at most ${MAX_DECIMALS} decimal places.`),
+    })
+    .refine(data => data.fromCurrency !== data.toCurrency, {
+        message: 'Choose two different tokens.',
+        path: ['toCurrency'],
+    });
+
+type SwapFormValues = z.infer<typeof swapFormSchema>;
 
 type SwapReceipt = {
     fromAmount: number;

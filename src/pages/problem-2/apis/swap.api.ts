@@ -10,6 +10,8 @@ export type SwapRequest = {
 export type SwapResponse = {
     id: string;
     status: 'completed';
+    rate: number;
+    toAmount: number;
 };
 
 export function submitSwap(payload: SwapRequest) {

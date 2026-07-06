@@ -1,0 +1,67 @@
+/* Shiki dual light/dark themes: codeToHtml is called once with defaultColor:false,
+   emitting both palettes as CSS vars only (no plain color/background) — each
+   selector below picks one. background-color is applied at the .shiki (pre)
+   level only, not per span, so a highlighted line's background isn't painted
+   over by its own (opaque) token backgrounds. */
+.shiki,
+.shiki span {
+    color: var(--shiki-light);
+    font-style: var(--shiki-light-font-style);
+    font-weight: var(--shiki-light-font-weight);
+    text-decoration: var(--shiki-light-text-decoration);
+}
+.shiki {
+    background-color: var(--shiki-light-bg);
+}
+
+.dark .shiki,
+.dark .shiki span {
+    color: var(--shiki-dark);
+    font-style: var(--shiki-dark-font-style);
+    font-weight: var(--shiki-dark-font-weight);
+    text-decoration: var(--shiki-dark-text-decoration);
+}
+.dark .shiki {
+    background-color: var(--shiki-dark-bg);
+}
+
+/* Sized to the widest line (not just the visible viewport) so a highlighted
+   line's width: 100% below covers the full horizontally-scrollable content,
+   not just the initially-visible portion. */
+.shiki {
+    width: max-content;
+    min-width: 100%;
+}
+
+.shiki code {
+    counter-reset: line;
+}
+
+.shiki .line::before {
+    counter-increment: line;
+    content: counter(line);
+    position: sticky;
+    left: 1rem;
+    z-index: 1;
+    display: inline-block;
+    width: 2rem;
+    margin-right: 1rem;
+    text-align: right;
+    color: var(--muted-foreground);
+    opacity: 0.5;
+    user-select: none;
+    background-color: var(--shiki-light-bg);
+}
+.dark .shiki .line::before {
+    background-color: var(--shiki-dark-bg);
+}
+
+.shiki .line.highlighted {
+    background-color: var(--accent);
+    display: inline-block;
+    width: 100%;
+}
+.shiki .line.highlighted::before {
+    background-color: var(--accent);
+    opacity: 1;
+}

@@ -25,9 +25,30 @@ async function selectToken(user: ReturnType<typeof userEvent.setup>, triggerInde
 }
 
 describe('SwapForm', () => {
-    it('completes a full swap: load prices, pick tokens, compute rate, submit', async () => {
+    it('does not compute or show a conversion until the Swap button is clicked', async () => {
         mockPrices();
-        server.use(http.post(SWAP_ENDPOINT, () => HttpResponse.json({ id: 'swap_1', status: 'completed' })));
+        const user = userEvent.setup();
+        renderWithProviders(<SwapForm />);
+
+        await waitForElementToBeRemoved(() => document.querySelector('[data-slot="skeleton"]'));
+
+        await selectToken(user, 0, 'ETH');
+        await selectToken(user, 1, 'USDC');
+
+        const amountInput = screen.getAllByPlaceholderText('0.0')[0];
+        await user.type(amountInput, '2');
+
+        expect(screen.queryByText(/rate:/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/swapped/i)).not.toBeInTheDocument();
+    });
+
+    it('submits to the backend and renders the amount/rate it computes, only after clicking Swap', async () => {
+        mockPrices();
+        server.use(
+            http.post(SWAP_ENDPOINT, () =>
+                HttpResponse.json({ id: 'swap_1', status: 'completed', rate: 2000, toAmount: 4000 })
+            )
+        );
 
         const user = userEvent.setup();
         renderWithProviders(<SwapForm />);
@@ -40,10 +61,10 @@ describe('SwapForm', () => {
         const amountInput = screen.getAllByPlaceholderText('0.0')[0];
         await user.type(amountInput, '2');
 
-        expect(await screen.findByText('1 ETH = 2000.000000 USDC')).toBeInTheDocument();
-
         await user.click(screen.getByRole('button', { name: /swap/i }));
 
+        expect(await screen.findByText('Swapped 2 ETH for 4000.000000 USDC')).toBeInTheDocument();
+        expect(screen.getByText('Rate: 1 ETH = 2000.000000 USDC')).toBeInTheDocument();
         await waitFor(() => expect(amountInput).toHaveValue(null));
     });
 

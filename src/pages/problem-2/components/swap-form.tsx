@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { ArrowDownUp, Loader2 } from 'lucide-react';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
@@ -14,8 +15,17 @@ import { submitSwap } from '@/pages/problem-2/apis/swap.api';
 import { TokenSelect } from '@/pages/problem-2/components/token-select';
 import { swapFormSchema, type SwapFormValues } from '@/pages/problem-2/lib/swap-schema';
 
+type SwapReceipt = {
+    fromAmount: number;
+    fromCurrency: string;
+    toCurrency: string;
+    toAmount: number;
+    rate: number;
+};
+
 export function SwapForm() {
     const { data: tokens, isLoading, isError } = useQuery({ queryKey: PRICES_QUERY_KEY, queryFn: getTokens });
+    const [receipt, setReceipt] = useState<SwapReceipt | null>(null);
 
     const {
         control,
@@ -32,20 +42,20 @@ export function SwapForm() {
 
     const swapMutation = useMutation({
         mutationFn: submitSwap,
-        onSuccess: () => {
+        onSuccess: (response, variables) => {
+            setReceipt({
+                fromAmount: variables.fromAmount,
+                fromCurrency: variables.fromCurrency,
+                toCurrency: variables.toCurrency,
+                toAmount: response.toAmount,
+                rate: response.rate,
+            });
             toast.success('Swap submitted successfully.');
-            reset({ fromCurrency: watch('fromCurrency'), toCurrency: watch('toCurrency'), fromAmount: '' });
+            reset({ fromCurrency: variables.fromCurrency, toCurrency: variables.toCurrency, fromAmount: '' });
         },
     });
 
-    const [fromCurrency, toCurrency, fromAmount] = watch(['fromCurrency', 'toCurrency', 'fromAmount']);
-    const fromToken = tokens?.find(token => token.currency === fromCurrency);
-    const toToken = tokens?.find(token => token.currency === toCurrency);
-
-    const rate = fromToken && toToken ? fromToken.price / toToken.price : undefined;
-    const parsedAmount = Number(fromAmount);
-    const toAmount =
-        rate !== undefined && !Number.isNaN(parsedAmount) && parsedAmount > 0 ? parsedAmount * rate : undefined;
+    const [fromCurrency, toCurrency] = watch(['fromCurrency', 'toCurrency']);
 
     const handleSwapDirection = () => {
         setValue('fromCurrency', toCurrency);
@@ -53,6 +63,7 @@ export function SwapForm() {
     };
 
     const onSubmit = (values: SwapFormValues) => {
+        setReceipt(null);
         swapMutation.mutate({
             fromCurrency: values.fromCurrency,
             toCurrency: values.toCurrency,
@@ -107,13 +118,7 @@ export function SwapForm() {
             <div className='space-y-2 rounded-lg border p-4'>
                 <Label>To</Label>
                 <div className='flex gap-2'>
-                    <Input
-                        type='text'
-                        readOnly
-                        placeholder='0.0'
-                        className='flex-1'
-                        value={toAmount !== undefined ? toAmount.toFixed(6) : ''}
-                    />
+                    <Input type='text' readOnly placeholder='Computed when you swap' className='flex-1' value='' />
                     <Controller
                         control={control}
                         name='toCurrency'
@@ -127,16 +132,22 @@ export function SwapForm() {
                 {errors.toCurrency && <p className='text-sm text-destructive'>{errors.toCurrency.message}</p>}
             </div>
 
-            {rate !== undefined && (
-                <p className='text-center text-sm text-muted-foreground'>
-                    1 {fromCurrency} = {rate.toFixed(6)} {toCurrency}
-                </p>
-            )}
-
             <Button type='submit' size='lg' disabled={swapMutation.isPending}>
                 {swapMutation.isPending && <Loader2 className='size-4 animate-spin' />}
                 {swapMutation.isPending ? 'Submitting...' : 'Swap'}
             </Button>
+
+            {receipt && (
+                <div className='rounded-lg border bg-muted/30 p-4 text-center text-sm'>
+                    <p className='font-medium'>
+                        Swapped {receipt.fromAmount} {receipt.fromCurrency} for {receipt.toAmount.toFixed(6)}{' '}
+                        {receipt.toCurrency}
+                    </p>
+                    <p className='text-muted-foreground'>
+                        Rate: 1 {receipt.fromCurrency} = {receipt.rate.toFixed(6)} {receipt.toCurrency}
+                    </p>
+                </div>
+            )}
         </form>
     );
 }

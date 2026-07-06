@@ -1,4 +1,4 @@
-import type { Blockchain } from './wallet-page.types';
+import type { Blockchain } from '@/pages/problem-3/types/wallet-page.types';
 
 const DEFAULT_PRIORITY = -99;
 

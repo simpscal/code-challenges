@@ -1,4 +1,4 @@
-import type { WalletBalance } from './wallet-page.types';
+import type { WalletBalance } from '@/pages/problem-3/types/wallet-page.types';
 
 /**
  * Standing in for a real data hook (context/query) — the original snippet
